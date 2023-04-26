@@ -9,6 +9,7 @@ import Home from './pages/Home'
 
 function App() {
   const [companies, setCompanies] = useState([])
+  const [drinks, setDrinks] = useState([])
 
   useEffect(() => {
     fetch("http://localhost:9292/companies")
@@ -20,9 +21,9 @@ function App() {
     <div>
       <Nav /> 
       <Routes>
-        <Route path='/company/:id' element={<Companies companies={companies}/>}/>
-        <Route path='/drinks' element={<Drinks/>}/>
-        <Route path='/home' element={<Home companies={companies}/>}/>
+        <Route path='/company/:id' element={<Companies companies={companies} setCompanies={setCompanies} drinks={drinks} setDrinks={setDrinks}/>}/>
+        <Route path='/drink/:id' element={<Drinks/>}/>
+        <Route path='/' element={<Home companies={companies} setCompanies={setCompanies}/>}/>
       </Routes>
     </div>
   )
