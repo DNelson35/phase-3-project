@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 
-function Company({ companies, setCompanies, drinks, setDrinks }) {
+function Company({ companies, setCompanies }) {
   const [formInput, setFormInput] = useState({
     name: '',
     image_url: '',
@@ -10,6 +10,7 @@ function Company({ companies, setCompanies, drinks, setDrinks }) {
 
   const [editOn, setEditOn] = useState(false)
   const [newHeader, setNewHeader] = useState('')
+  const [drinks, setDrinks] = useState([])
 
   const { id } = useParams()
   const company = companies.find(company => company.id === parseInt(id))
@@ -32,7 +33,8 @@ function Company({ companies, setCompanies, drinks, setDrinks }) {
   const onInputChange = (e) => {
     setFormInput({...formInput, [e.target.name]: e.target.value})
   }
-
+  // TODO: try moving all request that need companies to the app and passing them down as props
+  // TODO: after moving request company  could be passed using use location
   const onDeleteDrink = (drink) => {
     fetch(`http://localhost:9292/drinks/${drink.id}`, {
       method: 'DELETE',
@@ -45,7 +47,7 @@ function Company({ companies, setCompanies, drinks, setDrinks }) {
 
   const onEditSubmit = (e) => {
     e.preventDefault()
-    fetch(`http://localhost:9292//companies/${id}`, {
+    fetch(`http://localhost:9292/companies/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -114,24 +116,28 @@ function Company({ companies, setCompanies, drinks, setDrinks }) {
   
   return company? (
     <div>
-      <div className='ml-10'>
-        {header()}
-        <img src={company.logo_url} alt="logo" className='block mx-auto h-24 rounded-full sm:mx-0 sm:shrink-0 object-cover w-[100px] mb-5'/>
-        <h2 className='text-xl font-bold italic underline'>Drinks</h2>
-        <ul>
-          {drinksList}
-        </ul>
+      <div className='flex'>
+        <div className='w-1/2 ml-4 mr-4'>
+          {header()}
+          <img src={company.logo_url} alt="logo" className='block mx-auto h-24 rounded-full sm:mx-0 sm:shrink-0 object-cover w-[100px] mb-5'/>
+          <h2 className='text-xl font-bold italic underline'>Drinks</h2>
+          <ul>
+            {drinksList}
+          </ul>
+        </div>
+        <div className='w-12'>
+          <form onSubmit={onCreateDrinks}>
+            <label>Name</label>
+            <input type='text' name='name' value={name} onChange={onInputChange}></input>
+            <label>Image URL</label>
+            <input type='url' name='image_url' value={image_url} onChange={onInputChange}></input>
+            <label>Description</label>
+            <input type="text" name='description' value={description} onChange={onInputChange}></input>
+            <button type="submit">Create Drinks</button>
+          </form>
+        </div>
       </div>
-      <form onSubmit={onCreateDrinks}>
-        <label>Name</label>
-        <input type='text' name='name' value={name} onChange={onInputChange}></input>
-        <label>Image URL</label>
-        <input type='url' name='image_url' value={image_url} onChange={onInputChange}></input>
-        <label>Description</label>
-        <input type="text" name='description' value={description} onChange={onInputChange}></input>
-        <button type="submit">Create Drinks</button>
-      </form>
-      <button onClick={onDeleteCompany}>Delete Company 🗑️</button>
+        <button onClick={onDeleteCompany}>Delete Company 🗑️</button>
     </div>
     
   ) : null
