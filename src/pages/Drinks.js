@@ -1,17 +1,13 @@
 import React from 'react'
-import { useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
+import DrinkCard from '../components/DrinkCard'
 
-function Drinks() {
-  const location = useLocation()
-  const drinks = location.state
+function Drinks({companies}) {
+  const { id } = useParams()
+  const company = companies.find(company => company.id === parseInt(id))
 
-  const drinksList = drinks.map(drink => (
-    <div key={drink.id}>
-      <h1>{drink.name}</h1>
-      <img src={drink.image_url} alt='drink'/>
-      <p>{drink.description}</p>
-    </div>
-   ))
+  const drinksList = (company)? ( company.drinks.map(drink =><DrinkCard key={drink.id} drink={drink}/>)): null
+
   return (
     <div>
       {drinksList}

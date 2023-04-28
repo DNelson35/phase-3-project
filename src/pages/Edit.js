@@ -29,9 +29,9 @@ function Edit({ companies, setCompanies}) {
 
   const companyLinks = companies.map(company =>(
     <div key={company.id}>
-      <h2>{company.name} <Link to={`/company/${company.id}`}>✎</Link></h2>
+      <h2>{company.name} <Link to={`/company/${company.id}`} state={company}>✎</Link></h2>
       <img src={company.logo_url} alt='logo' className='block mx-auto h-24 rounded-full sm:mx-0 sm:shrink-0 object-cover w-[100px] mb-5'/>
-      <p>Drink Count: {company.drink_count}</p>
+      <p>Drink Count: {company.drinks.length}</p>
     </div>
   ))
 
