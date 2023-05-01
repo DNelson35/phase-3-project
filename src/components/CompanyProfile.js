@@ -1,24 +1,68 @@
 import React from 'react'
+import { useState } from 'react'
+import useCompaniesContext from '../hooks/useCompaniesContext'
 
-function CompanyProfile({ header, company, onDeleteDrink, id }) {
+function CompanyProfile({ company, id }) {
     
-    const drinksList = company.drinks.map(drink => (
-        <div key={drink.id}>
-          <li className='text-lg font-semibold'>
-            {drink.name} 
-            <button onClick={() => onDeleteDrink(id, drink)}>🗑️</button>
-          </li>
-        </div>
-    ))
+  const [editOn, setEditOn] = useState(false)
+  const [newHeader, setNewHeader] = useState('')
+  const {companies, setCompanies} = useCompaniesContext()
+
+
+  const onEditSubmit = (e) => {
+    e.preventDefault()
+    fetch(`http://localhost:9292/companies/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: newHeader
+      })
+    })
+    .then(resp => resp.json())
+    .then(editedCompany => setCompanies(companies.map(company => {
+      if(company.id === editedCompany.id) {
+        return editedCompany
+      } else {
+        return company
+      }
+    })))
+    .then(setEditOn(false))
+    
+  }
+
+
+ 
+
+  const onEdit = () => {
+    setEditOn(true)
+  }
+
+  const header = () => {
+    if (company){
+      return editOn? (
+          <form onSubmit={onEditSubmit}>
+            <input type='text' value={newHeader} onChange={(e) => setNewHeader(e.target.value)} placeholder={company.name} autoFocus className='text-2xl text-black font-bold mb-5'/>
+            <button type="submit">submit</button>
+          </form> 
+        ) 
+        : 
+        (
+          <>
+            <h1 className='text-2xl text-black font-bold mb-3 whitespace-nowrap'>{company.name} <button onClick={onEdit}>✎</button></h1>
+          </>
+        )
+    } else{
+      return null
+    }
+  }
 
   return (
-    <div className='w-1/2 ml-4 mr-4'>
-        {header()}
-        <img src={company.logo_url} alt="logo" className='block mx-auto h-24 rounded-full sm:mx-0 sm:shrink-0 object-cover w-[100px] mb-5'/>
-        <h2 className='text-xl font-bold italic underline'>Drinks</h2>
-        <ul>
-        {drinksList}
-        </ul>
+    <div className='flex w-auto ml-4 mr-4'>
+
+      <div className='flex-block justify-center w-auto text-center'>
+          <img src={company.logo_url} alt="logo" className='flex relative mx-auto h-auto rounded-full object-cover w-[200px]'/>
+          {header()}
+      </div>
     </div>
   )
 }
