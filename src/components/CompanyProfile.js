@@ -48,7 +48,7 @@ function CompanyProfile({ company, id }) {
         : 
         (
           <>
-            <h1 className='text-2xl text-black font-bold mb-3 whitespace-nowrap'>{company.name} <button onClick={onEdit}>✎</button></h1>
+            <h1 className='flex text-2xl text-black font-bold mb-3 whitespace-nowrap justify-center'>{company.name}<button onClick={onEdit} className='pl-2'>✎</button></h1>
           </>
         )
     } else{
@@ -57,12 +57,11 @@ function CompanyProfile({ company, id }) {
   }
 
   return (
-    <div className='flex w-auto ml-4 mr-4'>
-
-      <div className='flex-block justify-center w-auto text-center'>
-          <img src={company.logo_url} alt="logo" className='flex relative mx-auto h-auto rounded-full object-cover w-[200px]'/>
-          {header()}
+    <div className='flex-block justify-center ml-4 mr-4 w-auto h-auto'>
+      <div className=' rounded-[100%] min-w-[200px]'>
+          <img src={company.logo_url} alt="logo" className=' rounded-[100%] max-h-[200px] min-h-[200px] max-w-[200px] min-w-[200px]'/>
       </div>
+      {header()}
     </div>
   )
 }

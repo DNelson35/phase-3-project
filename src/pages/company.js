@@ -5,7 +5,7 @@ import CompanyProfile from '../components/CompanyProfile'
 import EditProfileForm from '../components/EditProfileForm'
 import DrinkCard from '../components/DrinkCard'
 
-function Company({ onCreateDrinks}) {
+function Company() {
   
   const {companies, setCompanies} = useCompaniesContext()
   
@@ -27,9 +27,9 @@ function Company({ onCreateDrinks}) {
     <div>
       <div className='flex'>
         <CompanyProfile company={company} id={id}/>
-        <EditProfileForm id={id} onCreateDrinks={onCreateDrinks} />
+        <EditProfileForm id={id}/>
       </div>
-      <button onClick={() => onDeleteCompany(id)}>Delete Company 🗑️</button>
+      <button onClick={() => onDeleteCompany(id)} className=' '>delete company 🗑️</button>
       <div className='grid grid-cols-3 mt-10  place-items-center h-[282px]'>
         {drinksList}
       </div>

@@ -17,8 +17,8 @@ function DrinkCard({drink}) {
         ))))
     }
   return (
-    <div className='flex  justify-center w-auto h-full bg-red-500 border border-black'>
-        <div className='relative text-center'>
+    <div className='flex  justify-center w-auto max-w-[213px] min-w-[213px] h-full bg-red-500 border border-black'>
+        <div className='relative text-center w-full'>
             <div className='flex justify-center'>
                 <img src={drink.image_url} alt="drink" className='w-full h-52 '/>
             </div>
